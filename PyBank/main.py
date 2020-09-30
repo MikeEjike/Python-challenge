@@ -3,7 +3,7 @@ import csv
 
 
 csvpath = os.path.join('Resources', 'budget_data.csv')
-#csvreader = csv.reader(csvfile, delimiter=',')
+
 
 
 with open(csvpath,'r') as csvfile:
@@ -57,7 +57,7 @@ with open(csvpath,'r') as csvfile:
         change_over_period.append(changed_data) 
         
 
-        average_change = '{0:.2f}'.format(sum(change_over_period) / len(change_over_period))
+        average_change = '{0:.2f}'.format((sum(change_over_period) - change_over_period[0])/ 85 )
         greatest_increase = max(change_over_period)
         greatest_decrease = min(change_over_period)
         
@@ -69,7 +69,7 @@ with open(csvpath,'r') as csvfile:
             greatest_decrease_month = row[0]
 
     
-    print('Financial Analysis \n---------------------------------\n')
+    print('Financial Analysis \n---------------------------------')
     print(f'Total Months: {total_months}')
     print(f'Total : ${net_total}')
     print(f'Average Change: ${average_change}')

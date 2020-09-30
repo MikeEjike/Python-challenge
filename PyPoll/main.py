@@ -2,8 +2,9 @@ import os
 import csv
 
 
-csvpath = os.path.join('PyBank','Resources', 'budget_data.csv')
-#csvreader = csv.reader(csvfile, delimiter=',')
+
+csvpath = os.path.join('Resources', 'election_data.csv')
+
 
 
 with open(csvpath,'r') as csvfile:
@@ -13,128 +14,89 @@ with open(csvpath,'r') as csvfile:
     csvheader = next(csvfile)
 
    
-    total_months = 0
-    net_total = 0
-
-    # Monthly profit/Losses, when looped will count as the previous month when subtracted by the current month
-    monthlyPL = 0
+    total_votes = 0
     
-    # Amount change from current month to previous month
-    changed_data = 0
+    khan_count = 0
+    correy_count = 0
+    li_count = 0
+    otooley_count = 0
 
-    # Average Change
-    average_change = 0
+    khan_percentage = 0
+    correy_percentage = 0
+    li_percentage = 0
+    otooley_percentage = 0
 
-    # WIll be the greatest increases/decreases and month associated with
-    greatest_increase = 0
-    greatest_increase_month = 0
-    greatest_decrease = 0
-    greatest_decrease_month = 0
+    current_candidate = 0
+    previous_candidate = 0
 
-    # Monthly profit/loss data
-    monthly_data = []
-
-    # Previous month's profit/loss change list
-    previous_change_over_period = []
-
-    # Current month's profit/loss change list
-    change_over_period = []
-
+    candidates = []
+    candidate_names = []
+    
     for row in csvreader:
+        total_votes = total_votes + 1
+
+
+        current_candidate = row[2]
+
         
+        # This function helped me find the unique candidates within the csv file
+        def unique(names):
+            unique_names = []
+            for x in names:
+                if x not in unique_names:
+                    unique_names.append(x)
+            for x in unique_names:
+                print(x)
         
+            
+        # Compares the previous candidate with the current one so the function can differentiate between unique values
+        if (current_candidate != previous_candidate):
+            candidate_names.append(row[2])
 
 
-  
-        total_months = total_months + 1  
-        net_total = net_total + int(row[1])
-        monthly_data.append(int(row[1])) 
+        previous_candidate = row[2]
 
-
-        previous_change_over_period.append(changed_data)
-        changed_data = int(row[1])-monthlyPL
-        monthlyPL = int(row[1])
-        change_over_period.append(changed_data) 
-        
-
-        average_change = '{0:.2f}'.format(sum(change_over_period) / len(change_over_period))
-        greatest_increase = max(change_over_period)
-        greatest_decrease = min(change_over_period)
-        
-
-        # Determines the month at which the change it at its greatest increase/deacrease
-        if (changed_data == greatest_increase):
-            greatest_increase_month = row[0]
-        elif (changed_data == greatest_decrease):
-            greatest_decrease_month = row[0]
-
+        # This counts the total votes per candidate
+        if row[2] == "Khan":
+            khan_count = khan_count + 1
+        elif row[2] == "Correy":
+            correy_count = correy_count + 1
+        elif row [2] == "Li":
+            li_count = li_count + 1
+        elif row [2] == "O'Tooley":
+            otooley_count = otooley_count + 1
     
-    print('Financial Analysis \n---------------------------------\n')
-    print(f'Total Months: {total_months}')
-    print(f'Total : ${net_total}')
-    print(f'Average Change: ${average_change}')
-    print(f'Greatest Increase in Profits: {greatest_increase_month} ${greatest_increase}')
-    print(f'Greatest Decrease in Profits: {greatest_decrease_month} ${greatest_decrease}')    
+    # This shows the percentage each candidate received from the total votes 
+    khan_percentage = '{0:.3f}'.format(round((khan_count / total_votes) * 100))
+    correy_percentage = '{0:.3f}'.format(round((correy_count / total_votes) * 100))
+    li_percentage = '{0:.3f}'.format(round((li_count / total_votes) * 100))
+    otooley_percentage = '{0:.3f}'.format(round((otooley_count / total_votes) * 100))
+
+
+    candidates.append(["Khan","Correy","Li","O'Tooley"])
+
+
+    print('Election Results \n-------------------------')
+    print(f'Total Votes: {total_votes}\n-------------------------')
+    print(f'{candidates[0][0]}: {khan_percentage}% ({khan_count})')
+    print(f'{candidates[0][1]}: {correy_percentage}% ({correy_count})')
+    print(f'{candidates[0][2]}: {li_percentage}% ({li_count})')
+    print(f'{candidates[0][3]}: {otooley_percentage}% ({otooley_count})\n-------------------------')
+    print(f'Winner: {candidates[0][0]}')
 
 
 
-# Specify the file to write to
-output_path = os.path.join("..", "output", "new2.csv")
+# Creating a new file and writing the results to that file
+output_path = os.path.join("Analysis", "PyPoll_Analysis.txt")
 
-with open(output_path, 'w') as csvfile:
-    csvwriter = csv.writer(csvfile , delimiter = ',')
-    header = ['First Name','Last Name','SSN']
-    csvwriter.writerow(header)
+analysis_file = open(output_path, 'w')
 
-    csvwriter.writerow(['John','Doe','321-654-2198'])
-    
+analysis_file.write('Election Results \n-------------------------\n')
+analysis_file.write(f'Total Votes: {total_votes}\n-------------------------\n')
+analysis_file.write(f'{candidates[0][0]}: {khan_percentage}% ({khan_count})\n')
+analysis_file.write(f'{candidates[0][1]}: {correy_percentage}% ({correy_count})\n')
+analysis_file.write(f'{candidates[0][2]}: {li_percentage}% ({li_count})\n')
+analysis_file.write(f'{candidates[0][3]}: {otooley_percentage}% ({otooley_count})\n-------------------------\n')
+analysis_file.write(f'Winner: {candidates[0][0]}')
 
-    
-
-    # print(f'Average Change: {average_change}')
-    # print(f'Greatest Increase in Profits: {greatest_increase}')
-    # print(f'Greatest Decrease in Profits: {greatest_decrease}')
-    # for i in csvreader:
-    #     print(i)
-
-
-
-
-        # changed_data = []
-        # change_over_period = 0
-        # for increase in csvreader:
-        #     change_over_period = (increase + 1) - increase
-        #     changed_data.append(change_over_period)
-    
-        # greatest_increase = max(changed_data)
-        # greatest_decrease = min(changed_data)
-
-######################################################################
-    # def python_analysis(csvreader):
-    #     date = csvreader[0]
-    #     total_months = int(len(csvreader[0]))
-    #     profit_losses = csvreader[1]
-        
-    #     net_total = 0
-    #     for income in csvreader[1]:
-    #         net_total = net_total + income 
-        
-    #     average_change = net_total/total_months
-        
-        
-    #     changed_data = []
-    #     change_over_period = 0
-    #     for increase in csvreader:
-    #         change_over_period = (increase + 1) - increase
-    #         changed_data.append(change_over_period)
-        
-    #     greatest_increase = max(changed_data)
-    #     greatest_decrease = min(changed_data)
-
-    #     print('Financial Analysis')
-    #     print(f'Total Months: {total_months}')
-    #     print(f'Average Change: {average_change}')
-    #     print(f'Greatest Increase in Profits: {greatest_increase}')
-    #     print(f'Greatest Decrease in Profits: {greatest_decrease}')
-
-    # python_analysis(csvreader)
+analysis_file.close()  
