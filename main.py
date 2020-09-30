@@ -31,7 +31,9 @@ with open(csvpath,'r') as csvfile:
     monthlyPL = 0
     changed_data = 0
     greatest_increase = 0
+    greatest_increase_month = 0
     greatest_decrease = 0
+    greatest_decrease_month = 0
     monthly_data = []
     previous_change_over_period = []
     change_over_period = []
@@ -44,17 +46,25 @@ with open(csvpath,'r') as csvfile:
         total_months = total_months + 1  
         net_total = net_total + int(row[1])
 
-        monthly_data.append(float(row[1])) 
+        monthly_data.append(int(row[1])) 
 
         previous_change_over_period.append(changed_data)
 
-        changed_data = float(row[1])-monthlyPL
-        monthlyPL = float(row[1])
+        changed_data = int(row[1])-monthlyPL
+        monthlyPL = int(row[1])
 
         change_over_period.append(changed_data) 
         
 
-        if (changed_data > )
+        greatest_increase = max(change_over_period)
+        greatest_decrease = min(change_over_period)
+        
+        if (changed_data == greatest_increase):
+            greatest_increase_month = row[0]
+        elif (changed_data == greatest_decrease):
+            greatest_decrease_month = row[0]
+
+        
         # for row2 in csvreader:
 
         #     net_total2 = (increase + 1) - increase
@@ -65,14 +75,23 @@ with open(csvpath,'r') as csvfile:
         # print(f'{total_months})
     #total_months = len(row[0])
     #profit_losses = row[1]         
-    difference = [] 
     
-    print(change_over_period)
-    print(previous_change_over_period)
-    print('Financial Analysis')
+
+    # greatest_increase = max(change_over_period)
+    # greatest_decrease = min(change_over_period)
+
+    
+    # print(change_over_period)
+    # print(previous_change_over_period)
+
+
+    print(greatest_increase_month)
+    print(greatest_decrease_month)
+    print('Financial Analysis \n---------------------------------\n')
     print(f'Total Months: {total_months}')
     print(f'Total : ${net_total}')
-        
+    print(f'Greatest Increase in Profits: {greatest_increase_month} ${greatest_increase}')
+    print(f'Greatest Decrease in Profits: {greatest_decrease_month} ${greatest_decrease}')    
 
 
 
