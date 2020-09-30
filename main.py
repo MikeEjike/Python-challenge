@@ -28,9 +28,13 @@ with open(csvpath,'r') as csvfile:
    
     total_months = 0
     net_total = 0
-    net_total2 = 0
-    changed_data = []
-    change_over_period = 0
+    monthlyPL = 0
+    changed_data = 0
+    greatest_increase = 0
+    greatest_decrease = 0
+    monthly_data = []
+    previous_change_over_period = []
+    change_over_period = []
     for row in csvreader:
         
         
@@ -38,7 +42,19 @@ with open(csvpath,'r') as csvfile:
 
   
         total_months = total_months + 1  
-        net_total = net_total + float(row[1])
+        net_total = net_total + int(row[1])
+
+        monthly_data.append(float(row[1])) 
+
+        previous_change_over_period.append(changed_data)
+
+        changed_data = float(row[1])-monthlyPL
+        monthlyPL = float(row[1])
+
+        change_over_period.append(changed_data) 
+        
+
+        if (changed_data > )
         # for row2 in csvreader:
 
         #     net_total2 = (increase + 1) - increase
@@ -49,48 +65,18 @@ with open(csvpath,'r') as csvfile:
         # print(f'{total_months})
     #total_months = len(row[0])
     #profit_losses = row[1]         
+    difference = [] 
     
-    
+    print(change_over_period)
+    print(previous_change_over_period)
     print('Financial Analysis')
     print(f'Total Months: {total_months}')
     print(f'Total : ${net_total}')
-    
-
-
-
-
-
-
-    csvheader2 = next(csvfile)
-
-    total_months = 0
-    net_total = 0
-    net_total2 = 0
-    changed_data = []
-    change_over_period = 0
-    for row in csvreader:
-        
         
 
 
-  
-        total_months = total_months + 1  
-        net_total = net_total + float(row[1])
-        # for row2 in csvreader:
 
-        #     net_total2 = (increase + 1) - increase
-        #     # changed_data.append(change_over_period)        
 
-    
-
-        # print(f'{total_months})
-    #total_months = len(row[0])
-    #profit_losses = row[1]         
-    
-    print(csvheader2)
-    print('Financial Analysis')
-    print(f'Total Months: {total_months}')
-    print(f'Total : ${net_total}')
     
 
     # print(f'Average Change: {average_change}')
